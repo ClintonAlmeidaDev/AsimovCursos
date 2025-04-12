@@ -24,8 +24,13 @@ def game_lop(windows):
         direction = get_new_direction(windows=windows, timeout=100)
         if direction is None:
             direction = current_direction
+
+        if direction_is_opposite(direction=direction, current_direction=current_direction):
+            direction = current_direction
         move_snake(snake=sneak, direction = direction, snake_ate_fruit=snake_ate_fruit)
         if snake_hit_border(snake = sneak, window=windows):
+            return
+        if snake_hit_itself(snake=sneak):
             return
         if snake_hit_fruit(snake=sneak, fruit=fruit):
             snake_ate_fruit = True
@@ -33,6 +38,22 @@ def game_lop(windows):
         else:
             snake_ate_fruit = False
         current_direction = direction
+
+def direction_is_opposite(direction, current_direction):
+    match direction:
+        case curses.KEY_UP:
+            return current_direction == curses.KEY_DOWN
+        case curses.KEY_LEFT:
+            return current_direction == curses.KEY_RIGHT
+        case curses.KEY_DOWN:
+            return current_direction == curses.KEY_UP
+        case curses.KEY_RIGHT:
+            return current_direction == curses.KEY_LEFT
+
+def snake_hit_itself(snake):
+    head = snake[0]
+    body = snake[1:]
+    return head in body
 
 
 def get_new_fruit(window):
