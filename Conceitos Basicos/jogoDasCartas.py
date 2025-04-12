@@ -27,43 +27,41 @@ def gerar_baralho(qtdBaralhos, possuiCoringas = False, deveSerEmbaralhado = Fals
     return tuple(baralhos)
 
 def mostrar_baralho(baralho):
-    
-    valor = 0
-    for indice, i in enumerate(baralho):
-        valor = valor + len(baralho[indice])
-        
-    print(f'QUANTIDADE DE CARTAS: {valor}')  
-    print(*baralho)  
+    baralhoTemp = list(baralho)
+    for i in baralhoTemp:
+        print(f'Quantidade de cartas por baralho: {len(i)}')
+
+    print(f'Cartas: {baralhoTemp}')
 
 def dar_as_cartas(baralho, qtdJogadores, qtdCartas):
-    jogadores_agrupados = []
+    grupoJogadores = []
+
     for _ in range(qtdJogadores):
         lista = []
-        jogadores_agrupados.append(lista)
+        grupoJogadores.append(lista)
 
-    for indCartas, carta in enumerate(range(qtdCartas)):
-        for indiceJogadores, i in enumerate(range(qtdJogadores)):
-            listaBaralhoTemp = list(baralho)
-            print(f'Carta da Lista - {listaBaralhoTemp[indiceJogadores][indCartas]}')
-            cartaTemp = listaBaralhoTemp.pop([indiceJogadores][indCartas])
-            baralho = tuple(listaBaralhoTemp)
-            jogadores_agrupados[indiceJogadores].append(cartaTemp)
+    for qc in range(qtdCartas):
+        for indice, ij in enumerate(range(qtdJogadores)):
+            for i in baralho:
+                if i:
+                    cartaTemporaria = i.pop()
+                    grupoJogadores[indice].append(cartaTemporaria)
+                    break
+                else:
+                    continue
+    return grupoJogadores
 
-
-    return jogadores_agrupados
-
-
+def mostrar_jogadores(jogadores):
+    for indice, i in enumerate(jogadores):
+        print(f'JOGADOR {indice} \n QUANTIDADE DE CARTAS {len(i)} \n CARTAS: {i}')
 
 valores = gerar_baralho(2, True, True)
 
-jogadores = dar_as_cartas(valores, 2, 9)
+mostrar_baralho(valores)
+jogadores = dar_as_cartas(valores, 2, 40)
+mostrar_baralho(valores)
+mostrar_jogadores(jogadores)
 
-print(jogadores)
-
-# for indice, i in enumerate(jogadores):
-#     print(f'{indice} - {i}')
-
-#mostrar_baralho(valores)
     
     
 
